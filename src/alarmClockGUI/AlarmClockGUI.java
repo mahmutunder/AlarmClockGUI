@@ -1,7 +1,6 @@
 package alarmClockGUI;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.Calendar;
 
 import javax.swing.JButton;
@@ -44,40 +43,37 @@ public class AlarmClockGUI {
         statusLabel.setBounds(10, 70, 270, 25);
         panel.add(statusLabel);
 
-        setAlarmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String alarmTime = alarmField.getText();
-                String[] alarmTimeArray = alarmTime.split(":");
-                int hour = Integer.parseInt(alarmTimeArray[0]);
-                int minute = Integer.parseInt(alarmTimeArray[1]);
+        // set alarm
+        setAlarmButton.addActionListener(e -> {
+            String alarmTime = alarmField.getText();
+            String[] alarmTimeArray = alarmTime.split(":");
+            int hour = Integer.parseInt(alarmTimeArray[0]);
+            int minute = Integer.parseInt(alarmTimeArray[1]);
 
-                Calendar now = Calendar.getInstance();
-                Calendar alarm = Calendar.getInstance();
-                alarm.set(Calendar.HOUR_OF_DAY, hour);
-                alarm.set(Calendar.MINUTE, minute);
-                alarm.set(Calendar.SECOND, 0);
+            Calendar now = Calendar.getInstance();
+            Calendar alarm = Calendar.getInstance();
+            alarm.set(Calendar.HOUR_OF_DAY, hour);
+            alarm.set(Calendar.MINUTE, minute);
+            alarm.set(Calendar.SECOND, 0);
 
-                System.out.println(now);
-                if (alarm.before(now)) {
-                    alarm.add(Calendar.DATE, 1);
 
-                }
-
-                long timeUntilAlarm = alarm.getTimeInMillis() - now.getTimeInMillis();
-
-                Timer timer = new Timer((int) timeUntilAlarm, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        statusLabel.setText("Wake Up!");
-                        ((Timer) e.getSource()).stop();
-                    }
-                });
-                timer.start();
-
-                statusLabel.setText("Alarm Set for " + alarmTime);
+            if (alarm.before(now)) {
+                alarm.add(Calendar.DATE, 1);
 
             }
+
+            long timeUntilAlarm = alarm.getTimeInMillis() - now.getTimeInMillis();
+
+            // set timer
+
+            Timer timer = new Timer((int) timeUntilAlarm, e1 -> {
+                statusLabel.setText("Wake Up!!!!!!!!!!!!");
+                ((Timer) e1.getSource()).stop();
+            });
+            timer.start();
+
+            statusLabel.setText("Alarm set for " + alarmTime);
+
         });
     }
 }
